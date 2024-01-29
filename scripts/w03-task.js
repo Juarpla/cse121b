@@ -67,6 +67,9 @@ const calculateTotal = () => {
     if (!validateInput(subtotalInput)) {
         return;
     }
+
+    subtotalInput.removeAttribute("size");
+
     let subtotalValue = parseFloat(subtotalInput);
 
     let isMember = document.querySelector("#member").checked;
