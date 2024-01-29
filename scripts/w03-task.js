@@ -54,9 +54,8 @@ const divideNumbers = () => {
 document.querySelector("#divideNumbers").addEventListener("click", divideNumbers);
 
 /* Decision Structure */
-document.querySelector("#subtotal").removeAttribute("size"); // verify this
 const validateInput = (value) => {
-    if (isNaN(value) || value < 0 || value > 9999) {
+    if (isNaN(value) || value < 0) {
         alert("Please enter a valid number amount between 0 and 9999!");
         return false;
     }
