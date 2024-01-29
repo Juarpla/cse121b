@@ -54,6 +54,7 @@ const divideNumbers = () => {
 document.querySelector("#divideNumbers").addEventListener("click", divideNumbers);
 
 /* Decision Structure */
+document.querySelector("#subtotal").removeAttribute("size"); // verify this
 const validateInput = (value) => {
     if (isNaN(value) || value < 0 || value > 9999) {
         alert("Please enter a valid number amount between 0 and 9999!");
@@ -68,8 +69,6 @@ const calculateTotal = () => {
         return;
     }
 
-    subtotalInput.removeAttribute("size");
-
     let subtotalValue = parseFloat(subtotalInput);
 
     let isMember = document.querySelector("#member").checked;
@@ -79,8 +78,6 @@ const calculateTotal = () => {
     let formattedTotal = `$ ${subtotalValue.toFixed(2)}`;
 
     document.querySelector("#total").textContent = formattedTotal;
-
-    subtotalInput.style.width = "5em";
 }
 
 document.querySelector("#getTotal").addEventListener("click", calculateTotal);
