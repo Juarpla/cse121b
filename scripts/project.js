@@ -1,3 +1,6 @@
+import API_KEY from './config.js';
+const apiKey = API_KEY;
+
 function displayMovies(movies) {
     const moviesContainer = document.querySelector("#movies-container");
     // Clear previous content
@@ -27,58 +30,54 @@ function displayMovies(movies) {
 }
 
 async function fetchPopularMovies() {
-    const apiKey = "772e9d722a51cc2390dfb1066cc5135f";
     try {
         const response = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}`);
         const data = await response.json();
-        console.log("Popular movies: ", data.results);
+        console.log(`Popular movies: " ${data.results}`);
         displayMovies(data.results);
     } catch (error) {
-        console.error("Error fetching popular movies: ", error);
+        console.error(`Error fetching popular movies: ${error}`);
     }
 }
 
 async function searchMovies() {
-    const apiKey = "772e9d722a51cc2390dfb1066cc5135f";
     const query = document.querySelector("#searchInput").value;
     try {
         const response = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${query}`);
         const data = await response.json();
-        console.log("Search movies: ", data.results);
+        console.log(`Search movies: ${data.results}`);
         displayMovies(data.results)
     } catch (error) {
-        console.error("Error Searching movies: ", error);
+        console.error(`Error Searching movies: ${error}`);
     }    
 }
 
 async function fetchByGenreMovies() {
-    const apiKey = "772e9d722a51cc2390dfb1066cc5135f";
     const genreSelect = document.querySelector("#genreFilter");
     const selectedGenreId = genreSelect.value;
     if (!selectedGenreId) {
-        console.error('Please select a genre.');
+        console.error("Please select a genre.");
         return;
     }
     try {
         const response = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&with_genres=${selectedGenreId}`);
         const data = await response.json();
-        console.log("Movies about ${genreSelect}: ", data.results);
+        console.log(`Movies about ${genreSelect}: ${data.results}`);
         displayMovies(data.results)
     } catch (error) {
-        console.error("Error fetching movies by genre: ", error);
+        console.error(`Error fetching movies by genre: ${error}`);
     }
     
 }
 
 async function fetchTopRatedMovies() {
-    const apiKey = "772e9d722a51cc2390dfb1066cc5135f";
     try {
         const response = await fetch(`https://api.themoviedb.org/3/movie/top_rated?api_key=${apiKey}`);
         const data = await response.json();
-        console.log("Top Rated Movies: ", data.results);
+        console.log(`Top Rated Movies: ", ${data.results}`);
         displayMovies(data.results)
     } catch (error) {
-        console.error("Error fetching top rated movies: ", error);
+        console.error(`Error fetching top rated movies: ${error}`);
     }
 }
 
