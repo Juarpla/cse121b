@@ -1,72 +1,90 @@
+function displayMovies(movies) {
+    const moviesContainer = document.querySelector("#movies-container");
+    // Clear previous content
+    moviesContainer.innerHTML = '';
 
+    movies.forEach(movie => {
+        const movieCard = document.createElement("div");
+        movieCard.classList.add("movie-card");
 
+        const posterUrl = movie.poster_path
+            ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
+            : 'images/img_not_found.jpg';
+        
+        movieCard.innerHTML = `
+            <img src="${posterUrl}" alt="${movie.vote_average}">
+            <h3>${movie.title}</h3>
+            <p>Release Date: ${movie.release_date}</p>
+        `;
 
+        moviesContainer.appendChild(movieCard);
 
-
-
-
-/* W05: Programming Tasks */
-
-/* Declare and initialize global variables */
-const templesElement = document.querySelector("#temples");
-let templeList = [];
-
-/* async displayTemples Function */
-const displayTemples = (temples) => {
-    temples.forEach(temple => {
-        const article = document.createElement("article");
-        const title = document.createElement("h3");
-        title.textContent = temple.templeName;
-        const image = document.createElement("img");
-        image.src = temple.imageUrl;
-        image.alt = temple.location;
-        article.appendChild(title);
-        article.appendChild(image);
-        templesElement.appendChild(article);
+        const imgElement = movieCard.querySelector('img');
+        imgElement.addEventListener('mouseover', () => {
+            imgElement.setAttribute('title', `Average Score: ${movie.vote_average}`);
+        });
     });
-};
+}
 
-/* async getTemples Function using fetch()*/
-const getTemples = async () => {
-    const response = await fetch("https://byui-cse.github.io/cse121b-ww-course/resources/temples.json");
-    if (response.ok) {
-        templeList = await response.json();
+async function fetchPopularMovies() {
+    const apiKey = "772e9d722a51cc2390dfb1066cc5135f";
+    try {
+        const response = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}`);
+        const data = await response.json();
+        console.log("Popular movies: ", data.results);
+        displayMovies(data.results);
+    } catch (error) {
+        console.error("Error fetching popular movies: ", error);
     }
-    displayTemples(templeList);
-    console.log("testList:", templeList);
-};
+}
 
-/* reset Function */
-const reset = () => {
-    const articles = templesElement.querySelectorAll("article");
-    articles.forEach(article => {
-        article.remove();
-    });
-};
+async function searchMovies() {
+    const apiKey = "772e9d722a51cc2390dfb1066cc5135f";
+    const query = document.querySelector("#searchInput").value;
+    try {
+        const response = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${query}`);
+        const data = await response.json();
+        console.log("Search movies: ", data.results);
+        displayMovies(data.results)
+    } catch (error) {
+        console.error("Error Searching movies: ", error);
+    }    
+}
 
-/* filterTemples Function */
-const filterTemples = temples => {
-    reset();
-    let filter = document.querySelector("#filtered").value;
-    switch (filter) {
-        case "utah":
-            displayTemples(temples.filter(temple => temple.location.includes("Utah")));
-            break;
-        case "notutah":
-            displayTemples(temples.filter(temple => !temple.location.includes("Utah")));
-            break;
-
-        case "older":
-            displayTemples(temples.filter(temple => new Date(temple.dedicated) < new Date(1950, 0, 1)));
-            break;
-        case "all":
-        default:
-            displayTemples(temples);
-            break;
+async function fetchByGenreMovies() {
+    const apiKey = "772e9d722a51cc2390dfb1066cc5135f";
+    const genreSelect = document.querySelector("#genreFilter");
+    const selectedGenreId = genreSelect.value;
+    if (!selectedGenreId) {
+        console.error('Please select a genre.');
+        return;
     }
-};
+    try {
+        const response = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&with_genres=${selectedGenreId}`);
+        const data = await response.json();
+        console.log("Movies about ${genreSelect}: ", data.results);
+        displayMovies(data.results)
+    } catch (error) {
+        console.error("Error fetching movies by genre: ", error);
+    }
+    
+}
 
-getTemples();
+async function fetchTopRatedMovies() {
+    const apiKey = "772e9d722a51cc2390dfb1066cc5135f";
+    try {
+        const response = await fetch(`https://api.themoviedb.org/3/movie/top_rated?api_key=${apiKey}`);
+        const data = await response.json();
+        console.log("Top Rated Movies: ", data.results);
+        displayMovies(data.results)
+    } catch (error) {
+        console.error("Error fetching top rated movies: ", error);
+    }
+}
 
-/* Event Listener */
-document.querySelector("#filtered").addEventListener("change", () => { filterTemples(templeList) });
+// call:
+fetchPopularMovies();
+
+document.getElementById("searchButton").addEventListener("click", searchMovies);
+document.getElementById("byGenreButton").addEventListener("click", fetchByGenreMovies);
+document.getElementById("topRatedButton").addEventListener("click", fetchTopRatedMovies);

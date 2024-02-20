@@ -25,24 +25,29 @@
     </ul>
   </nav>
   <main id="gridly">
-    <h1>Project: Movie Recommendation Web App</h1>
-    <h2>Fetch(): Some Latter-day Temples</h2>
-
-    <select id="filtered" title="Choose a data filter.">
-      <option value="" disabled selected>Filter Temples</option>
-      <option value="utah">Utah</option>
-      <option value="notutah">Outside of Utah</option>
-      <option value="older">Built Before 1950</option>
-      <option value="all">No Filter</option>
+    <h1>Project: Movie Recommendation App</h1>
+    <input type="text" id="searchInput" placeholder="Search movies...">
+    <button id="searchButton">Search</button>
+    <select id="genreFilter">
+      <option value="">All Genres</option>
+      <option value="28">Action</option>
+      <option value="12">Adventure</option>
+      <option value="35">Comedy</option>
+      <option value="99">Documentary</option>
+      <option value="878">Science Fiction</option>
+      <option value="10751">Family</option>
+      <option value="9648">Mystery</option>
+      <option value="27">Horror</option>
     </select>
-
-    <div id="temples">
-    </div>
+    <button id="byGenreButton">By Genre</button>
+    <button id="topRatedButton">Top Rated</button>
+    
+    <div id="movies-container"></div>
+    
   </main>
 
-
   <footer>
-    &copy;<span id="year"></span> | Week 05 - Fetching Temple Data | CSE 121b
+    &copy;<span id="year"></span> | Project - Movie Recommendation App | CSE 121b
   </footer>
   <script src="scripts/main.js"></script>
   <script>
